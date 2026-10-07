@@ -14,15 +14,25 @@ app.use(helmet({
 
 // CORS Configuration
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3000',
-  'http://127.0.0.1:3000'
+  'http://127.0.0.1:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
 ];
+
+if (process.env.FRONTEND_URL) {
+  process.env.FRONTEND_URL.split(',').forEach(url => allowedOrigins.push(url.trim()));
+}
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, server-to-server) or in whitelist
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow server-to-server, curl, mobile apps
+    if (!origin) return callback(null, true);
+
+    // Allow exact matches in allowedOrigins or any vercel.app preview/production deployment
+    const isAllowed = allowedOrigins.includes(origin) || /\.vercel\.app$/.test(new URL(origin).hostname);
+
+    if (isAllowed) {
       callback(null, true);
     } else {
       callback(new Error('Origine non autorisée par la politique CORS'));
