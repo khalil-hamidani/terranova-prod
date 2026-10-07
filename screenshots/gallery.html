@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraNova — Galerie Design & Screenshots</title>
+  <style>
+    :root {
+      --bg: #0F1410;
+      --card-bg: #18221A;
+      --card-border: #28372B;
+      --accent: #52B756;
+      --accent-hover: #67CB6B;
+      --text: #F4F7EE;
+      --text-muted: #8E9E8E;
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 36px 28px 80px;
+      line-height: 1.5;
+    }
+    header {
+      max-width: 1400px;
+      margin: 0 auto 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(82, 183, 86, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(82, 183, 86, 0.3);
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .filter-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: #0E150F;
+      border-color: var(--accent);
+    }
+    .stats-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      align-self: center;
+    }
+    .grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    .img-wrap {
+      width: 100%;
+      height: 220px;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.3s;
+    }
+    .img-wrap:hover img {
+      transform: scale(1.03);
+    }
+    .card.is-mobile .img-wrap img {
+      object-fit: contain;
+      padding: 8px;
+    }
+    .card-body {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .card-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+    .meta-tag {
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      color: var(--text-muted);
+    }
+    .card-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-action {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-action:hover {
+      background: var(--accent);
+      color: #0E150F;
+      border-color: var(--accent);
+    }
+
+    /* Lightbox Modal */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #modal.open {
+      display: flex;
+    }
+    #modal img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      object-fit: contain;
+    }
+    #modal-close {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🌿 TerraNova UI Showcase <span class="badge">54 captures</span></h1>
+      <p class="subtitle">Catalogue visuel automatisé haute résolution (Figma Ready / 2x Retina)</p>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="desktop">Desktop</button>
+        <button class="filter-btn" data-filter="mobile">Mobile</button>
+        <button class="filter-btn" data-filter="light">Thème Clair</button>
+        <button class="filter-btn" data-filter="dark">Thème Sombre</button>
+        <button class="filter-btn" data-filter="rtl">Arabe (RTL)</button>
+      </div>
+    </div>
+    <div class="stats-info">
+      Généré le 26/09/2026 à 03:29:29
+    </div>
+  </header>
+
+  <main class="grid" id="galleryGrid">
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/01_home_fr_light.png" alt="Accueil (Hero & Sections)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Accueil (Hero & Sections)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/01_home_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/01_home_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/02_services_fr_light.png" alt="Services Écologiques" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Services Écologiques</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/02_services_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/02_services_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/03_products_fr_light.png" alt="Boutique & Filtres" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Boutique & Filtres</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/03_products_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/03_products_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/04_product_detail_fr_light.png" alt="Fiche Détail Produit" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Fiche Détail Produit</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/04_product_detail_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/04_product_detail_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/05_appointment_fr_light.png" alt="Réservation & Devis" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Réservation & Devis</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/05_appointment_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/05_appointment_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/06_contact_fr_light.png" alt="Contact & Support" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Contact & Support</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/06_contact_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/06_contact_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/07_checkout_fr_light.png" alt="Commande Directe" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Commande Directe</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/07_checkout_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/07_checkout_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/08_cart_drawer_fr_light.png" alt="Panier Actif (Modal)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Panier Actif (Modal)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/08_cart_drawer_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/08_cart_drawer_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/10_admin_dashboard_fr_light.png" alt="Admin — Tableau de Bord" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Tableau de Bord</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/10_admin_dashboard_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/10_admin_dashboard_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/11_admin_products_fr_light.png" alt="Admin — Gestion Produits" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Gestion Produits</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/11_admin_products_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/11_admin_products_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/12_admin_orders_fr_light.png" alt="Admin — Commandes & Statuts" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Commandes & Statuts</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/12_admin_orders_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/12_admin_orders_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/13_admin_appointments_fr_light.png" alt="Admin — Rendez-vous" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Rendez-vous</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/13_admin_appointments_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/13_admin_appointments_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_light_fr/14_admin_contacts_fr_light.png" alt="Admin — Messages Clients" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Messages Clients</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_light_fr/14_admin_contacts_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_light_fr/14_admin_contacts_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/01_home_fr_light.png" alt="Accueil (Hero & Sections)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Accueil (Hero & Sections)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/01_home_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/01_home_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/02_services_fr_light.png" alt="Services Écologiques" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Services Écologiques</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/02_services_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/02_services_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/03_products_fr_light.png" alt="Boutique & Filtres" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Boutique & Filtres</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/03_products_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/03_products_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/04_product_detail_fr_light.png" alt="Fiche Détail Produit" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Fiche Détail Produit</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/04_product_detail_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/04_product_detail_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/05_appointment_fr_light.png" alt="Réservation & Devis" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Réservation & Devis</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/05_appointment_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/05_appointment_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/06_contact_fr_light.png" alt="Contact & Support" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Contact & Support</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/06_contact_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/06_contact_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/07_checkout_fr_light.png" alt="Commande Directe" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Commande Directe</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/07_checkout_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/07_checkout_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/08_cart_drawer_fr_light.png" alt="Panier Actif (Modal)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Panier Actif (Modal)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/08_cart_drawer_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/08_cart_drawer_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/09_mobile_drawer_fr_light.png" alt="Menu Navigation Plein Écran" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Menu Navigation Plein Écran</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/09_mobile_drawer_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/09_mobile_drawer_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/10_admin_dashboard_fr_light.png" alt="Admin — Tableau de Bord" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Tableau de Bord</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/10_admin_dashboard_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/10_admin_dashboard_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/11_admin_products_fr_light.png" alt="Admin — Gestion Produits" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Gestion Produits</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/11_admin_products_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/11_admin_products_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/12_admin_orders_fr_light.png" alt="Admin — Commandes & Statuts" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Commandes & Statuts</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/12_admin_orders_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/12_admin_orders_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/13_admin_appointments_fr_light.png" alt="Admin — Rendez-vous" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Rendez-vous</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/13_admin_appointments_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/13_admin_appointments_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_fr/14_admin_contacts_fr_light.png" alt="Admin — Messages Clients" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Messages Clients</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_fr/14_admin_contacts_fr_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_fr/14_admin_contacts_fr_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/01_home_ar_light.png" alt="Accueil (Hero & Sections)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Accueil (Hero & Sections)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/01_home_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/01_home_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/02_services_ar_light.png" alt="Services Écologiques" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Services Écologiques</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/02_services_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/02_services_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/03_products_ar_light.png" alt="Boutique & Filtres" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Boutique & Filtres</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/03_products_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/03_products_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/04_product_detail_ar_light.png" alt="Fiche Détail Produit" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Fiche Détail Produit</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/04_product_detail_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/04_product_detail_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/05_appointment_ar_light.png" alt="Réservation & Devis" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Réservation & Devis</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/05_appointment_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/05_appointment_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/06_contact_ar_light.png" alt="Contact & Support" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Contact & Support</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/06_contact_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/06_contact_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/07_checkout_ar_light.png" alt="Commande Directe" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Commande Directe</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/07_checkout_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/07_checkout_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/08_cart_drawer_ar_light.png" alt="Panier Actif (Modal)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Panier Actif (Modal)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/08_cart_drawer_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/08_cart_drawer_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/09_mobile_drawer_ar_light.png" alt="Menu Navigation Plein Écran" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Menu Navigation Plein Écran</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/09_mobile_drawer_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/09_mobile_drawer_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/10_admin_dashboard_ar_light.png" alt="Admin — Tableau de Bord" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Tableau de Bord</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/10_admin_dashboard_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/10_admin_dashboard_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/11_admin_products_ar_light.png" alt="Admin — Gestion Produits" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Gestion Produits</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/11_admin_products_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/11_admin_products_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/12_admin_orders_ar_light.png" alt="Admin — Commandes & Statuts" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Commandes & Statuts</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/12_admin_orders_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/12_admin_orders_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/13_admin_appointments_ar_light.png" alt="Admin — Rendez-vous" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Rendez-vous</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/13_admin_appointments_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/13_admin_appointments_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-mobile"
+           data-type="mobile"
+           data-theme="light"
+           data-dir="rtl">
+        <div class="img-wrap" >
+          <img src="mobile/mobile_light_ar/14_admin_contacts_ar_light.png" alt="Admin — Messages Clients" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Messages Clients</h3>
+          <div class="card-meta">
+            <span class="meta-tag">📱 Mobile 390px</span>
+            <span class="meta-tag">☀️ Light</span>
+            <span class="meta-tag">AR RTL</span>
+          </div>
+          <div class="card-actions">
+            <a href="mobile/mobile_light_ar/14_admin_contacts_ar_light.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="mobile/mobile_light_ar/14_admin_contacts_ar_light.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/01_home_fr_dark.png" alt="Accueil (Hero & Sections)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Accueil (Hero & Sections)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/01_home_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/01_home_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/02_services_fr_dark.png" alt="Services Écologiques" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Services Écologiques</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/02_services_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/02_services_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/03_products_fr_dark.png" alt="Boutique & Filtres" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Boutique & Filtres</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/03_products_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/03_products_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/04_product_detail_fr_dark.png" alt="Fiche Détail Produit" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Fiche Détail Produit</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/04_product_detail_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/04_product_detail_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/05_appointment_fr_dark.png" alt="Réservation & Devis" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Réservation & Devis</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/05_appointment_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/05_appointment_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/06_contact_fr_dark.png" alt="Contact & Support" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Contact & Support</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/06_contact_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/06_contact_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/07_checkout_fr_dark.png" alt="Commande Directe" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Commande Directe</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/07_checkout_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/07_checkout_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/08_cart_drawer_fr_dark.png" alt="Panier Actif (Modal)" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Panier Actif (Modal)</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/08_cart_drawer_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/08_cart_drawer_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/10_admin_dashboard_fr_dark.png" alt="Admin — Tableau de Bord" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Tableau de Bord</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/10_admin_dashboard_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/10_admin_dashboard_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/11_admin_products_fr_dark.png" alt="Admin — Gestion Produits" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Gestion Produits</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/11_admin_products_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/11_admin_products_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/12_admin_orders_fr_dark.png" alt="Admin — Commandes & Statuts" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Commandes & Statuts</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/12_admin_orders_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/12_admin_orders_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/13_admin_appointments_fr_dark.png" alt="Admin — Rendez-vous" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Rendez-vous</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/13_admin_appointments_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/13_admin_appointments_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="card is-desktop"
+           data-type="desktop"
+           data-theme="dark"
+           data-dir="ltr">
+        <div class="img-wrap" >
+          <img src="desktop/desktop_dark_fr/14_admin_contacts_fr_dark.png" alt="Admin — Messages Clients" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Admin — Messages Clients</h3>
+          <div class="card-meta">
+            <span class="meta-tag">💻 Desktop 1440px</span>
+            <span class="meta-tag">🌙 Dark</span>
+            <span class="meta-tag">FR LTR</span>
+          </div>
+          <div class="card-actions">
+            <a href="desktop/desktop_dark_fr/14_admin_contacts_fr_dark.png" target="_blank" class="btn-action">Ouvrir plein écran</a>
+            <button class="btn-action btn-copy-path" data-path="desktop/desktop_dark_fr/14_admin_contacts_fr_dark.png">Copier le chemin</button>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  <div id="modal">
+    <span id="modal-close">&times;</span>
+    <img id="modalImg" src="" alt="Agrandissement" />
+  </div>
+
+  <script src="gallery.js"></script>
+</body>
+</html>

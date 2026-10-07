@@ -1,0 +1,535 @@
+/* ==========================================================================
+   TERRANOVA ECO-SERVICE — DESIGN SYSTEM & TOKENS
+   Inspired by LeafLife Landscape Design Theme
+   Typography: Plus Jakarta Sans (Headings) + DM Sans (Body/UI)
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  /* Surfaces & Backgrounds */
+  --bg-app: #F9FBF3;              /* Signature LeafLife pale ivory/cream */
+  --bg-surface: #FFFFFF;          /* Pure white card container */
+  --bg-surface-subtle: #F2F5EC;   /* Warm organic surface */
+  --bg-accent-soft: #E1ECE3;      /* LeafLife soft sage green */
+  --bg-input: #FFFFFF;
+  --bg-overlay: rgba(31, 42, 30, 0.45);
+
+  /* Brand Accents (LeafLife Forest Green) */
+  --color-primary: #374836;       /* Deep organic moss / forest */
+  --color-primary-hover: #263325;
+  --color-primary-contrast: #FFFFFF;
+  --color-accent: #4A6E47;        /* Medium organic foliage green */
+  --color-accent-light: #6FAF68;  /* Vibrant sprout accent */
+  --color-gold: #C29A5B;          /* Earthy warm gold / ochre */
+  --color-gold-soft: #FBF4E8;
+
+  /* Text & Typography */
+  --text-heading: #1F2A1E;        /* High contrast forest black */
+  --text-body: #4A5649;           /* Readable organic body copy */
+  --text-muted: #829181;          /* Secondary captions, subtitles */
+  --text-inverse: #F9FBF3;
+
+  /* Borders & Dividers */
+  --border-subtle: #E2E8DE;       /* Clean subtle line */
+  --border-strong: #CDD7C8;       /* Stronger card border */
+  --border-focus: #374836;
+
+  /* Status Tokens */
+  --status-success-bg: #E8F5E9;
+  --status-success-text: #2E7D32;
+  --status-pending-bg: #FFF8E1;
+  --status-pending-text: #B78103;
+  --status-danger-bg: #FFEBEE;
+  --status-danger-text: #C62828;
+  --status-info-bg: #E3F2FD;
+  --status-info-text: #1565C0;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(31, 42, 30, 0.05);
+  --shadow-md: 0 6px 20px -3px rgba(31, 42, 30, 0.08);
+  --shadow-lg: 0 16px 36px -6px rgba(31, 42, 30, 0.12);
+  --shadow-nav: 0 4px 20px rgba(55, 72, 54, 0.06);
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="dark"] {
+  /* Surfaces & Backgrounds */
+  --bg-app: #121913;              /* Deep obsidian dark botanical */
+  --bg-surface: #18221A;          /* Elevated forest slate surface */
+  --bg-surface-subtle: #202C22;   /* Secondary card container */
+  --bg-accent-soft: #253528;      /* Dark sage container */
+  --bg-input: #151F17;
+  --bg-overlay: rgba(0, 0, 0, 0.75);
+
+  /* Brand Accents */
+  --color-primary: #52B756;       /* Vivid botanical green */
+  --color-primary-hover: #63C967;
+  --color-primary-contrast: #0E150F;
+  --color-accent: #78C974;
+  --color-accent-light: #94E290;
+  --color-gold: #E5BF7E;
+  --color-gold-soft: #2A2518;
+
+  /* Text & Typography */
+  --text-heading: #F9FBF3;        /* Soft ivory heading */
+  --text-body: #C2CFC0;           /* Soft muted green body */
+  --text-muted: #7E907B;
+  --text-inverse: #121913;
+
+  /* Borders & Dividers */
+  --border-subtle: #243226;
+  --border-strong: #334636;
+  --border-focus: #52B756;
+
+  /* Status Tokens */
+  --status-success-bg: rgba(46, 125, 50, 0.22);
+  --status-success-text: #81C784;
+  --status-pending-bg: rgba(245, 158, 11, 0.2);
+  --status-pending-text: #FCD34D;
+  --status-danger-bg: rgba(239, 68, 68, 0.22);
+  --status-danger-text: #FCA5A5;
+  --status-info-bg: rgba(59, 130, 246, 0.22);
+  --status-info-text: #93C5FD;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 4px 24px rgba(0, 0, 0, 0.55);
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  background-color: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+
+p {
+  margin-bottom: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ==========================================================================
+   CONTAINER & LAYOUT
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.main {
+  min-height: calc(100vh - 160px);
+}
+
+.page {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+/* Section Header Styles (LeafLife Style) */
+.section-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px auto;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-accent-soft);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-subtle);
+}
+
+.page-title,
+.section-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-heading);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle,
+.section-subtitle {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   BUTTONS (LeafLife Architectural Aesthetic)
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+  box-shadow: 0 4px 12px rgba(55, 72, 54, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 6px 18px rgba(55, 72, 54, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-heading);
+  border-color: var(--border-subtle);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-accent-soft);
+  border-color: var(--border-strong);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* Outline Button */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+  transform: translateY(-2px);
+}
+
+/* Icon / Ghost Button */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-heading);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--bg-surface-subtle);
+  color: var(--color-primary);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+  border-radius: var(--radius-md);
+}
+
+.btn-full-width {
+  width: 100%;
+}
+
+/* ==========================================================================
+   FORMS & INPUTS
+   ========================================================================== */
+
+.form-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-heading);
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-heading);
+  background-color: var(--bg-input);
+  transition: all 0.2s ease;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(82, 183, 86, 0.18);
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ==========================================================================
+   BADGES & PILLS
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.badge-success {
+  background: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.badge-pending {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.badge-danger {
+  background: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}
+
+.badge-info {
+  background: var(--status-info-bg);
+  color: var(--status-info-text);
+}
+
+.badge-sage {
+  background: var(--bg-accent-soft);
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   SCROLLBAR & ACCESSIBILITY
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-top: 85px;
+    padding-bottom: 60px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ==========================================================================
+   ARABIC & RTL SUPPORT SYSTEM
+   ========================================================================== */
+
+[dir="rtl"] {
+  --font-heading: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-body: 'Cairo', system-ui, -apple-system, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-body);
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  font-family: var(--font-heading);
+  letter-spacing: normal;
+}
+
+[dir="rtl"] .form-label,
+[dir="rtl"] .form-control {
+  text-align: right;
+}
+
+[dir="rtl"] .search-box input {
+  padding-left: 1rem;
+  padding-right: 2.5rem;
+}
+
+[dir="rtl"] .search-box svg {
+  left: auto;
+  right: 0.85rem;
+}
+
+[dir="rtl"] .btn {
+  letter-spacing: normal;
+}
+
+[dir="rtl"] .header-actions {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .cart-badge-count {
+  right: auto;
+  left: -4px;
+}

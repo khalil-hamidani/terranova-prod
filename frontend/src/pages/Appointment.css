@@ -1,0 +1,243 @@
+/* ==========================================================================
+   APPOINTMENT BOOKING PAGE STYLES (LeafLife Design System)
+   ========================================================================== */
+
+.appointment-page {
+  padding-top: 100px;
+  padding-bottom: 90px;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+.appointment-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+/* Main Form Card */
+.appointment-card-main {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-section-block {
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.form-section-block:last-of-type {
+  border-bottom: none;
+  margin-bottom: 20px;
+  padding-bottom: 0;
+}
+
+.block-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Service Choice Cards */
+.service-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.service-choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-subtle);
+  background: var(--bg-surface-subtle);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.service-choice-card:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-surface);
+}
+
+.service-choice-card.active {
+  border-color: var(--color-primary);
+  background: var(--bg-accent-soft);
+  box-shadow: 0 4px 12px rgba(55, 72, 54, 0.08);
+}
+
+.choice-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.choice-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+
+.choice-info p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.appointment-submit-btn {
+  margin-top: 10px;
+  padding: 16px 24px;
+  font-size: 15px;
+}
+
+/* Reassurance Sidebar */
+.appointment-sidebar {
+  position: sticky;
+  top: 110px;
+}
+
+.sidebar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  letter-spacing: -0.01em;
+}
+
+.sidebar-benefits-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.sidebar-benefits-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.benefit-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--bg-accent-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.benefit-text strong {
+  display: block;
+  font-size: 13.5px;
+  color: var(--text-heading);
+  margin-bottom: 2px;
+}
+
+.benefit-text p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.sidebar-contact-box {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+}
+
+.sidebar-contact-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.sidebar-phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-phone-link:hover {
+  transform: scale(1.03);
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .appointment-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .appointment-card-main {
+    padding: 24px 18px;
+  }
+
+  .service-choice-grid {
+    grid-template-columns: 1fr;
+  }
+}

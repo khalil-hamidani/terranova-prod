@@ -1,0 +1,8 @@
+node_modules/
+.playwright-mcp/
+*.log
+backend/node_modules/
+frontend/node_modules/
+dist/
+build/
+.DS_Store
